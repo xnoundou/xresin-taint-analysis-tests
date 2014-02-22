@@ -1,0 +1,23 @@
+@author: Xavier N. Noumbissi (xnoumbis@uwaterloo.ca)
+Website: http://ece.uwaterloo.ca/~xnoumbis
+----------------------------------------------------------------------
+
+This repository contains files for testing the dynamic taint analysis
+we implemented for the resin PHP interpreter.
+
+The following libraries are needed:
+ - junit4.jar
+ - ant-junit4.jar
+ - httpunit-1.7.jar
+ - hamcrest-all-1.3.jar
+ - js.jar
+ - nekohtml.jar
+ - xercesImpl.jar
+ - xml-apis.jar
+ - xalan.jar
+
+A report about our dynamic analysis can be found at: 
+http://ece.uwaterloo.ca/~xnoumbis/files/cs846-nnoumbissi.pdf
+
+The dynamic implementation can be found at:
+https://github.com/xnoumbis/resin-taint-analysis.git

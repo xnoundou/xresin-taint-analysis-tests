@@ -1,0 +1,134 @@
+<?xml version="1.0" ?>
+
+<project name="Tests for Taint Propagation Implementation within the Quercus PHP Interpreter" default="runtests">
+    
+    <!-- Settings from ant.settings -->  
+    <!-- ============================================================================= -->
+    <property file="ant.settings" />
+    <!-- ============================================================================= -->
+
+
+    <!-- TASK-DEF -->
+    <!-- ============================================================================= -->
+    <taskdef resource="net/sf/antcontrib/antcontrib.properties" />
+    <taskdef name="if" classname="net.sf.antcontrib.logic.IfTask" /> 
+    <!-- ============================================================================= -->
+
+
+    <!-- Global properties -->  
+    <!-- ============================================================================= -->
+    <property name="test.src" value="src" />
+    <property name="test.bin" value="bin" />
+    <property name="reports.tests" value="reports" />
+    <!-- ============================================================================= -->
+
+
+    <!-- Classpath -->
+    <!-- ============================================================================= -->
+    <path id="test.classpath">
+	<pathelement path="${test.bin}" />
+	<pathelement location="${junit.jar}"/>
+	<pathelement location="${httpunit.jar}"/>
+	<pathelement location="${ant-junit.jar}"/>
+	<pathelement location="${hamcrest.jar}"/>
+	<pathelement location="${js.jar}"/>
+	<pathelement location="${nekohtml.jar}"/>
+	<pathelement location="${xercesj2.jar}"/>
+	<pathelement location="${xml-apis.jar}"/>
+	<pathelement location="${xalan.jar}"/>
+	<!-- quercus.jar shall include the classes we want to test-->
+	<pathelement path="${quercus.dir}"/>
+	<pathelement location="${quercus.jar}"/>
+    </path>
+    <!-- ============================================================================= -->
+
+
+    <!-- TARGET: init -->
+    <!-- ============================================================================= -->
+    <target name="init" >
+        <mkdir dir="${test.bin}" />
+	<mkdir dir="${reports.tests}" />
+    </target>
+    <!-- ============================================================================= -->
+    
+
+    <!-- TARGET: clean -->
+    <!-- ============================================================================= -->
+    <target name="clean">
+      <delete dir="${test.bin}" />
+    </target>
+    <!-- ============================================================================= -->
+
+
+    <!-- TARGET: compiletests -->
+    <!-- ============================================================================= -->
+    <target name="compiletests" depends="init" description="Compiles the Junit tests">
+      <javac srcdir="${test.src}" 
+	     destdir="${test.bin}"
+	     debug="off"
+	     classpathref="test.classpath"
+	     includeJavaRuntime="yes"
+	     includeAntRuntime="yes" />
+    </target>
+    <!-- ============================================================================= -->
+
+
+    <!-- TARGET: run tests -->
+    <!-- ============================================================================= -->
+    <target name="runtests" depends="compiletests" description="Runs the Junit tests">
+      <junit printsummary="true"
+	     fork="no" 
+	     haltonfailure="no"
+	     showoutput="no"
+	     filtertrace="true">
+
+  	  <classpath>
+    	    <path refid="test.classpath"/>
+	    <pathelement location="${test.bin}" />
+	  </classpath>    
+
+	  <formatter type="plain" usefile="false"/>
+	  <formatter type="xml"/>
+
+  	  <batchtest fork="yes" todir="${reports.tests}">
+            <fileset dir="${test.src}">
+	      <include name="**/*.java"/>
+	      <exclude name="**/TestUtil.java"/>
+	    </fileset>
+ 	  </batchtest>
+        </junit>
+      </target>
+    <!-- ============================================================================= -->
+
+
+    <!-- TARGET: junitreport -->
+    <!-- ============================================================================= -->
+    <target name="junitreport" depends="runtests" description="Creates HTML report of the test results">
+      <junitreport todir="${reports.tests}"> 
+	<fileset dir="${reports.tests}">
+	  <include name="TEST-*.xml"/>
+	</fileset>
+	<report format="frames" todir="${reports.tests}/html"/>
+      </junitreport>
+    </target>
+    <!-- ============================================================================= -->
+
+
+    <!-- TARGET: display-classpath -->
+    <!-- ============================================================================= -->
+    <target name="display-classpath" depends="init">
+    	<property name="tesclasspath" refid="test.classpath" />
+	<echo message="Project classpath: ${tesclasspath}" />
+    </target>
+    <!-- ============================================================================= -->
+
+
+    <!-- TARGET: display-properties -->
+    <!-- ============================================================================= -->
+    <target name="display-properties" >
+	<echoproperties />
+    </target>
+    <!-- ============================================================================= -->    
+    
+        
+</project>

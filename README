@@ -16,8 +16,8 @@ The following libraries are needed:
  - xml-apis.jar
  - xalan.jar
 
-A report about our dynamic analysis can be found at: 
-http://ece.uwaterloo.ca/~xnoumbis/files/cs846-nnoumbissi.pdf
+A report about our dynamic analysis and the testing methodology
+can be found at: http://ece.uwaterloo.ca/~xnoumbis/files/cs846-nnoumbissi.pdf
 
 The dynamic implementation can be found at:
 https://github.com/xnoumbis/resin-taint-analysis.git
